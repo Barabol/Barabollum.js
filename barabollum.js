@@ -244,6 +244,7 @@ function move_to(object,destinationX,destinationY){
 //##&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   &&&&&&&&&&&&&&&&&@@@@@&&&&&&&&&
 // &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&@@@&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 //              &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+// :o
 
 function slide_by(object,destinationX,destinationY,speed){
     let z
