@@ -114,7 +114,7 @@
 > - name of the #1 object
 > - name of the #2 object
 # How x and y are used
-## Screan
+## Screen
 ![sg](https://user-images.githubusercontent.com/105214028/189426620-5b8399d9-0f14-4d6e-b0a9-68ff372ef9a8.png)
 
 ## Object
