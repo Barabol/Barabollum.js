@@ -115,10 +115,13 @@
 > - name of the #2 object
 # How x and y are used
 ## Screan
-![sg](https://user-images.githubusercontent.com/105214028/189380686-a18df38b-3a20-4ba4-bfd7-863511e21dd5.png)
+![sg](https://user-images.githubusercontent.com/105214028/189426620-5b8399d9-0f14-4d6e-b0a9-68ff372ef9a8.png)
+
 ## Object
-![sgg](https://user-images.githubusercontent.com/105214028/189380737-a535b22b-6227-4279-acd5-6166ac68f93b.png)
+![sgg](https://user-images.githubusercontent.com/105214028/189426600-bd0e9953-87cd-490a-9fa2-f026623e446d.png)
 # Example code
+
+
         let a=0
         set_process(
             function(){
@@ -148,3 +151,7 @@
                 give_collision("example2")
             }
         )
+        
+        
+![bez tytułu](https://user-images.githubusercontent.com/105214028/189426067-cf650d7a-f310-4042-9cf0-e9009ad48119.gif)
+        
