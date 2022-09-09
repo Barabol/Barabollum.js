@@ -113,3 +113,38 @@
 > returns true if #1 object is collideing with #2 object
 > - name of the #1 object
 > - name of the #2 object
+# How x and y are used
+## Screan
+![sg](https://user-images.githubusercontent.com/105214028/189380686-a18df38b-3a20-4ba4-bfd7-863511e21dd5.png)
+## Object
+![sgg](https://user-images.githubusercontent.com/105214028/189380737-a535b22b-6227-4279-acd5-6166ac68f93b.png)
+# Example code
+        let a=0
+        set_process(
+            function(){
+                if(is_colliding("example1","example2")){
+                    if(a==1)
+                    texture("example2","!logo.png")
+                    else
+                    texture("example2","!")
+                }
+                if(a==0 & !is_sliding("example1")){
+                    slide_by("example1",100,100,get_speed_by(100,100,2))
+                    a=1
+                }
+                    
+                else if(a==1 & !is_sliding("example1")){
+                    slide_by("example1",-100,-100,get_speed_by(-100,-100,2))
+                    a=0
+                }
+                    
+            }   
+        )
+        init(
+            function(){
+                new_obj(50,50,"example1")
+                new_obj(50,50,"example2")
+                give_collision("example1")
+                give_collision("example2")
+            }
+        )
