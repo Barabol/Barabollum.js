@@ -125,12 +125,12 @@
         let a=0
         set_process(
             function(){
-                if(is_colliding("example1","example2")){
-                    if(a==1)
+                
+                if(a==1 )
                     texture("example2","!logo.png")
-                    else
+                else if(a==0 )
                     texture("example2","!")
-                }
+                
                 if(a==0 & !is_sliding("example1")){
                     slide_by("example1",100,100,get_speed_by(100,100,2))
                     a=1
