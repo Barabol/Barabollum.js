@@ -1,7 +1,7 @@
 # Barabollum.js
 ![logo](https://cdn.discordapp.com/attachments/970467384710270976/1017755108735455242/unknown.png) <br />
 # Commands <br />
-### values tagged with '*' aren't required
+### values tagged with '*' are not required
 
 ## initial functions <br />
 
