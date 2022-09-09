@@ -49,11 +49,22 @@
 > - size of image rendered inside of an object as array ([100,100])
 > - offset of image rendered inside of an object
 > - repeating of image if it is smaller than object
+- ### set_pozition ( place )
+> sets where objects are shown
+> - place where objects are rendered 
 - ### set_size( name , width , height )
 > set size of object
 > - name of the object
 > - width of the object
 > - height of the object
+## layer functions <br />
+- ### get_layer( name )
+> returns layer of object
+> - name of the object
+- ### set_layer( name , layer )
+> sets layer of object
+> - name of the object
+> - layer of object
 ## movement functions <br />
 
 - ### move_to( name , x , y )
