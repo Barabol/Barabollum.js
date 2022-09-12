@@ -302,12 +302,12 @@ function slide_by(object,destinationX,destinationY,speed){
     if(names.indexOf(object)!=-1) object=names.indexOf(object)
     else if (errors==true) throw console.error("object of this name does not exist!")
 
-    console.log(destinationX,destinationY)
+    //console.log(destinationX,destinationY)
     
-    console.log("--------------")
+    //console.log("--------------")
     desiredX[object]+=Number(destinationX)
     desiredY[object]+=Number(destinationY)
-    console.log(desiredX[object],desiredY[object])
+    //console.log(desiredX[object],desiredY[object])
     if(desiredX[object]!=0 & desiredY[object]==0)
     z=desiredX[object]-x[object]
 
@@ -317,14 +317,14 @@ function slide_by(object,destinationX,destinationY,speed){
     else if(desiredX[object]!=0 & desiredY[object]!=0)
     z=Math.sqrt(Math.pow(desiredX[object]-x[object], 2) + Math.pow(desiredY[object]-y[object], 2))
     
-    console.log(z)
+    //console.log(z)
     if(z<0)
     z*=-1
-    console.log(z)
+    //console.log(z)
     if(z!=0){
-        console.log((z*refresh)/speed)
+        //console.log((z*refresh)/speed)
         refresh_of_process[object]=(z*refresh)/speed
-        console.log(desiredX[object]/refresh_of_process[object],desiredY[object]/refresh_of_process[object])
+        //console.log(desiredX[object]/refresh_of_process[object],desiredY[object]/refresh_of_process[object])
         if(destinationX!=0)
             momentumX[object]=((desiredX[object]-x[object])/refresh_of_process[object])
         if(destinationY!=0)
@@ -359,9 +359,9 @@ function slide_to(object,destinationX,destinationY,speed){
     YY=destinationY
     destinationX-=x[object]
     destinationY-=y[object]
-    console.log(destinationX,destinationY)
-    console.log(desiredX[object],desiredY[object])
-    console.log("--------------")
+    //console.log(destinationX,destinationY)
+    //console.log(desiredX[object],desiredY[object])
+    //console.log("--------------")
     desiredX[object]=Number(destinationX)
     desiredY[object]=Number(destinationY)
 
@@ -374,14 +374,14 @@ function slide_to(object,destinationX,destinationY,speed){
     else if(desiredX[object]!=0 & desiredY[object]!=0)
     z=Math.sqrt(Math.pow(desiredX[object], 2) + Math.pow(desiredY[object], 2))
     
-    console.log(z)
+    //console.log(z)
     if(z<0)
     z*=-1
-    console.log(z)
+    //console.log(z)
     if(z!=0){
-        console.log((z*refresh)/speed)
+        //console.log((z*refresh)/speed)
         refresh_of_process[object]=(z*refresh)/speed
-        console.log(desiredX[object]/refresh_of_process[object],desiredY[object]/refresh_of_process[object])
+        //console.log(desiredX[object]/refresh_of_process[object],desiredY[object]/refresh_of_process[object])
         if(destinationX!=0)
             momentumX[object]=(desiredX[object]/refresh_of_process[object])
         if(destinationY!=0)
@@ -551,7 +551,7 @@ function sync(shuld_not_be_called=true){
         refresh_of_process[process]=Math.round(refresh_of_process[process])
         if(refresh_of_process[process]!=0 & refresh_of_process[process]!=NaN){
 
-            console.log(names[process]+"|--|"+Math.round(refresh_of_process[process])+"|--|"+Math.round(x[process])+"|--|"+Math.round(y[process]))
+            //console.log(names[process]+"|--|"+Math.round(refresh_of_process[process])+"|--|"+Math.round(x[process])+"|--|"+Math.round(y[process]))
             if(refresh_of_process[process]>0 & refresh_of_process[process]<1)
                 refresh_of_process=1
     
