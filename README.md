@@ -70,18 +70,24 @@
 - ### move_to( name , x , y )
 > move to exact X and Y
 > - name of the object
-> - width of the object
-> - height of the object
+> - x of the object
+> - y of the object
 - ### move_by( name , x , y )
 > move by X and Y
 > - name of the object
-> - width of the object
-> - height of the object
+> - adition to x of the object
+> - adition to y of the object
+-### slide_to( name , x , y , speed )
+> slide to X and Y by moving speed px/fps 
+> - name of the object
+> - x of the object
+> - y of the object
+> - speed in px/fps
 - ### slide_by( name , x , y , speed )
 > slide by X and Y by moving speed px/fps 
 > - name of the object
-> - width of the object
-> - height of the object
+> - adition to x of the object
+> - adition to y of the object
 > - speed in px/fps
 - ### get_speed_by( x , y , time )
 > calculates px/fps 
