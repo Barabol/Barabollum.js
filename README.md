@@ -57,9 +57,13 @@
 > - name of the object
 > - width of the object
 > - height of the object
+- ### hide( name )
+> - hides object
+> - name of the object
+- ### show( name )
+> - shows object
+> - name of the object
 ## layer functions <br />
-- ### get_layer( name )
-> returns layer of object
 > - name of the object
 - ### set_layer( name , layer )
 > sets layer of object
@@ -94,11 +98,12 @@
 > - how many px in x direction object will travel in time
 > - how many px in y direction object will travel in time
 > - time it will take to slide to given x and y
+
+## get functions <br />
+
 - ### is_sliding( name )
 > returns true if object is sliding
 > - name of the object
-## alternating with refreshes functions <br />
-
 - ### get_x( name )
 > returns x of an object
 > - name of the object
@@ -111,7 +116,12 @@
 - ### get_height( name )
 > returns height of an object
 > - name of the object
- 
+- ### is_hidden( name )
+> returns true if object is hidden
+> - name of the object
+- ### get_layer( name )
+> returns layer of object
+
 ## collision functions  <br />
 
 - ### get_collision( name )
