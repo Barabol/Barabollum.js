@@ -13,7 +13,9 @@ let xheight=[]
 let errors=true
 let paused=false
 let has_collision=[]
-let colliding=[]
+let ishidden=[]
+let hiddenx=[]
+let hiddeny=[]
 
 let process_sync
 let interval
@@ -98,10 +100,15 @@ function new_obj(WindowWidth,WindowHeight,WindowName,WindowX=0,WindowY=0,pozitio
     x[x.length]=WindowX
     y[y.length]=WindowY
     names[names.length]=WindowName
-    has_collision[has_collision.length]=false
-    colliding[colliding.length]=false
-    momentumX[momentumY.length]=0
-    momentumY[momentumX.length]=0
+    has_collision[has_collision.length]=0
+    momentumX[momentumX.length]=0
+    momentumY[momentumY.length]=0
+    desiredX[desiredX.length]=WindowX
+    desiredY[desiredY.length]=WindowY
+    refresh_of_process[refresh_of_process.length]=0
+    ishidden[ishidden.length]=0
+    hiddenx[hiddenx.length]=0
+    hiddeny[hiddeny.length]=0
     //console.log(1000/refresh)//wyświeltanie czasu na refresh
     return true
 }
@@ -118,11 +125,13 @@ function del_obj(name){
     refresh_of_process.splice(id)
     xwidth.splice(id)
     xheight.splice(id)
-    has_collision.getElementById(id).remove()
-    colliding.getElementById(id).remove()
+    ishidden.splice(id)
+    has_collision.splice(id)
+    
 
     document.getElementById(name).remove()
 
+    
     return true
 }
 
@@ -162,7 +171,7 @@ function texture(object="main",input,size_of_image=[0,0],offset=[0,0],repeat=fal
             else if (Boolean(repeat)==true)
             document.getElementById(names[object]).style.backgroundRepeat="repeat"
             else
-            console.error("repeating myst be a boolean!")
+            console.error("repeating must be a boolean!")
 
             document.getElementById(names[object]).style.backgroundImage="url("+String(input)+")"
             if(size_of_image!=[0,0])
@@ -203,12 +212,27 @@ function move_by(object,destinationX,destinationY){
         if (isNaN(destinationX))    throw console.error("desired X must be specified as number!")
         if (isNaN(destinationY))    throw console.error("desired Y must be specified as number!")
     }
-
+    
     if(names.indexOf(object)!=-1) object=names.indexOf(object)
     else if (errors==true) throw console.error("object of this name does not exist!")
+    if(is_sliding(names[object])){
+        momentumX[object]=0
+        momentumY[object]=0
+        desiredY[object]=x[object]
+        desiredX[object]=y[object]
+    }
+    if(ishidden[object]!=1){
+        document.getElementById(names[object]).style.marginLeft=String((x[object]+destinationX))+"px"
+        document.getElementById(names[object]).style.marginTop=String((y[object]+destinationY))+"px"
+    }
+    
 
-    document.getElementById(names[object]).style.marginLeft=String((x[object]+destinationX))+"px"
-    document.getElementById(names[object]).style.marginTop=String((y[object]+destinationY))+"px"
+    x[object]+=destinationX
+    y[object]+=destinationY
+    desiredX[object]+=destinationX
+    desiredY[object]+=destinationY
+    hiddenx[object]=x[object]
+    hiddeny[object]=y[object]
 
     return true
 }
@@ -226,8 +250,23 @@ function move_to(object,destinationX,destinationY){
     if(names.indexOf(object)!=-1) object=names.indexOf(object)
     else if (errors==true) throw console.error("object of this name does not exist!")
 
+    if(is_sliding(names[object])){
+        momentumX[object]=0
+        momentumY[object]=0
+        desiredY[object]=x[object]
+        desiredX[object]=y[object]
+    }
+    if(ishidden[object]!=1){
     document.getElementById(names[object]).style.marginLeft=String(destinationX)+"px"
     document.getElementById(names[object]).style.marginTop=String(destinationY)+"px"
+    }
+    x[object]=destinationX
+    y[object]=destinationY
+    desiredX[object]=destinationY
+    desiredY[object]=destinationY
+    hiddenx[object]=x[object]
+    hiddeny[object]=y[object]
+
 
     return true
 }
@@ -249,6 +288,7 @@ function move_to(object,destinationX,destinationY){
 function slide_by(object,destinationX,destinationY,speed){
     let z
     if (errors==true){
+        if (ishidden[names.indexOf(object)]==1)throw console.error("object is hidden!")
         if (object==undefined)      throw console.error("object must be specified!")//errory
         if (destinationX==undefined)throw console.error("desired X must be specified!")
         if (destinationY==undefined)throw console.error("desired Y must be specified!")
@@ -262,74 +302,133 @@ function slide_by(object,destinationX,destinationY,speed){
     if(names.indexOf(object)!=-1) object=names.indexOf(object)
     else if (errors==true) throw console.error("object of this name does not exist!")
 
-    if(refresh_of_process[object]==undefined | refresh_of_process[object]==NaN)
-        refresh_of_process[object]=0
-
-    if(x[object]==undefined | x[object]==NaN)
-        x[object]=0
+    console.log(destinationX,destinationY)
     
-    if(y[object]==undefined | y[object]==NaN)
-        y[object]=0
+    console.log("--------------")
+    desiredX[object]+=Number(destinationX)
+    desiredY[object]+=Number(destinationY)
+    console.log(desiredX[object],desiredY[object])
+    if(desiredX[object]!=0 & desiredY[object]==0)
+    z=desiredX[object]-x[object]
 
-    if(destinationX==undefined | destinationX==NaN)
-        destinationX=0
+    else if(desiredX[object]==0 & desiredY[object]!=0)
+    z=desiredY[object]-y[object]
 
-    if(destinationY==undefined | destinationY==NaN)
-        destinationY=0
-
-    if(desiredX[object]==undefined | desiredX[object]==NaN)
-        desiredX[object]=0
-
-    if(desiredY[object]==undefined | desiredY[object]==NaN)
-        desiredY[object]=0
-
-    desiredX[object]+=destinationX
-    desiredY[object]+=destinationY
-
-    if(destinationX==0 && destinationY!=0) {
-        z=destinationY
-        if(refresh_of_process[object]==NaN | refresh_of_process[object]==undefined | refresh_of_process[object]==0)
-        refresh_of_process[object]=(z*refresh)/speed
-        else
-        refresh_of_process[object]+=(z*refresh)/speed
-    }
-    else if(destinationY==0 && destinationX!=0){
-        z=destinationX
-        if(refresh_of_process[object]==NaN | refresh_of_process[object]==undefined | refresh_of_process[object]==0)
-        refresh_of_process[object]=(z*refresh)/speed
-        else
-        refresh_of_process[object]+=(z*refresh)/speed
-    }
-    else if(destinationY!=0 && destinationX!=0){
-        z=Math.sqrt(Math.pow(destinationX, 2) + Math.pow(destinationY, 2))
-        if(refresh_of_process[object]==NaN | refresh_of_process[object]==undefined | refresh_of_process[object]==0)
-        refresh_of_process[object]=(z*refresh)/speed
-        else
-        refresh_of_process[object]+=(z*refresh)/speed
-    }
+    else if(desiredX[object]!=0 & desiredY[object]!=0)
+    z=Math.sqrt(Math.pow(desiredX[object]-x[object], 2) + Math.pow(desiredY[object]-y[object], 2))
     
-    if(refresh_of_process[object]<0)
-        refresh_of_process[object]*=-1
+    console.log(z)
+    if(z<0)
+    z*=-1
+    console.log(z)
+    if(z!=0){
+        console.log((z*refresh)/speed)
+        refresh_of_process[object]=(z*refresh)/speed
+        console.log(desiredX[object]/refresh_of_process[object],desiredY[object]/refresh_of_process[object])
+        if(destinationX!=0)
+            momentumX[object]=((desiredX[object]-x[object])/refresh_of_process[object])
+        if(destinationY!=0)
+            momentumY[object]=((desiredY[object]-y[object])/refresh_of_process[object])
+        hiddenx[object]=desiredX[object]
+        hiddeny[object]=desiredY[object]
+    }
+  
 
-    if(refresh_of_process[object]==(z*refresh)/speed){
-        momentumX[object]=destinationX/refresh_of_process[object]
-        momentumY[object]=destinationY/refresh_of_process[object]
-    }
-    else if(momentumX[object]<destinationX/refresh_of_process[object]){
-        momentumX[object]=destinationX/refresh_of_process[object]
-    }
-    else if(momentumY[object]<destinationY/refresh_of_process[object]){
-        momentumY[object]=destinationY/refresh_of_process[object]
-    }
 
     return true
+}
+
+function slide_to(object,destinationX,destinationY,speed){
+    let z=0
+
+    if (errors==true){
+        if (ishidden[names.indexOf(object)]==1)throw console.error("object is hidden!")
+        if (object==undefined)      throw console.error("object must be specified!")//errory
+        if (destinationX==undefined)throw console.error("desired X must be specified!")
+        if (destinationY==undefined)throw console.error("desired Y must be specified!")
+        if (isNaN(destinationX))    throw console.error("desired X must be specified as number!")
+        if (isNaN(destinationY))    throw console.error("desired Y must be specified as number!")
+        //if (destinationX<0)         throw console.error("desired X cannot be lower than 0!")
+        //if (destinationY<0)         throw console.error("desired Y cannot be lower than 0!")
+        if (speed==undefined)       throw console.error("speed must be specified!")
+    }
+    
+    if(names.indexOf(object)!=-1) object=names.indexOf(object)
+    else if (errors==true) throw console.error("object of this name does not exist!")
+    XX=destinationX
+    YY=destinationY
+    destinationX-=x[object]
+    destinationY-=y[object]
+    console.log(destinationX,destinationY)
+    console.log(desiredX[object],desiredY[object])
+    console.log("--------------")
+    desiredX[object]=Number(destinationX)
+    desiredY[object]=Number(destinationY)
+
+    if(desiredX[object]!=0 & desiredY[object]==0)
+    z=desiredX[object]
+
+    else if(desiredX[object]==0 & desiredY[object]!=0)
+    z=desiredY[object]
+
+    else if(desiredX[object]!=0 & desiredY[object]!=0)
+    z=Math.sqrt(Math.pow(desiredX[object], 2) + Math.pow(desiredY[object], 2))
+    
+    console.log(z)
+    if(z<0)
+    z*=-1
+    console.log(z)
+    if(z!=0){
+        console.log((z*refresh)/speed)
+        refresh_of_process[object]=(z*refresh)/speed
+        console.log(desiredX[object]/refresh_of_process[object],desiredY[object]/refresh_of_process[object])
+        if(destinationX!=0)
+            momentumX[object]=(desiredX[object]/refresh_of_process[object])
+        if(destinationY!=0)
+            momentumY[object]=(desiredY[object]/refresh_of_process[object])
+    }
+  
+    desiredX[object]+=x[object]
+    desiredY[object]+=y[object]
+    hiddenx[object]=desiredX[object]
+    hiddeny[object]=desiredY[object]
+
+    return true
+}
+
+function hide(name){
+    if(names.indexOf(name)!=-1) name=names.indexOf(name)
+    else if (errors==true) throw console.error("object of this name does not exist!")
+    if(errors==true & ishidden[name]==1)throw console.error("object is already hidden!")
+    document.getElementById(names[name]).style.marginLeft=String((-xwidth[name]-20))+"px"
+    document.getElementById(names[name]).style.marginTop=String((-xheight[name]-20))+"px"
+    ishidden[name]=1
+    return true
+}
+
+function show(name){
+    if(names.indexOf(name)!=-1) name=names.indexOf(name)
+    else if (errors==true) throw console.error("object of this name does not exist!")
+    if(errors==true & ishidden[name]==0)throw console.error("object is already hidden!")
+    ishidden[name]=0
+    x[name]=hiddenx[name]
+    y[name]=hiddeny[name]
+    document.getElementById(names[name]).style.marginLeft=String((x[name]))+"px"
+    document.getElementById(names[name]).style.marginTop=String((y[name]))+"px"
+    return true
+}
+
+function is_hidden(name){
+    if(names.indexOf(name)!=-1) name=names.indexOf(name)
+    else if (errors==true) throw console.error("object of this name does not exist!")
+    return Boolean(ishidden[name])
 }
 
 function give_collision(name){
     if(names.indexOf(name)!=-1) name=names.indexOf(name)
     else if (errors==true) throw console.error("object of this name does not exist!")
-    if(errors==true & has_collision[name]==true) throw console.error("this object alredy have collision")
-    has_collision[name]=true
+    if(errors==true & has_collision[name]==1) throw console.error("this object already have collision")
+    has_collision[name]=1
     return true
 }
 function get_collision(name){
@@ -340,8 +439,8 @@ function get_collision(name){
 function remove_collision(name){
     if(names.indexOf(name)!=-1) name=names.indexOf(name)
     else if (errors==true) throw console.error("object of this name does not exist!")
-    if(errors==true & has_collision[name]==false) throw console.error("this object alredy does not have collision")
-    has_collision[name]=false
+    if(errors==true & has_collision[name]==0) throw console.error("this object already does not have collision")
+    has_collision[name]=0
     return true
 }
 function set_process(process){
@@ -395,6 +494,8 @@ function get_speed_by(destinationX,destinationY,desiredTime){
     return(z)
 }
 function is_colliding(name){
+    if(ishidden==1)
+    return false
     process=names.indexOf(name)
     if(has_collision[process]){
         for(i=has_collision.length-1;i>=0;i--){
@@ -412,6 +513,8 @@ function is_colliding(name){
 }
 
 function is_colliding_with(name,name2){
+    if(ishidden==1)
+    return false
     process=names.indexOf(name)
     i=names.indexOf(name2)
     if(has_collision[process] & has_collision[i]){
@@ -446,12 +549,9 @@ function sync(shuld_not_be_called=true){
     process_sync()
     for(process=refresh_of_process.length-1;process>=0;process--){
         refresh_of_process[process]=Math.round(refresh_of_process[process])
-        if(refresh_of_process[process]!=0 ){
+        if(refresh_of_process[process]!=0 & refresh_of_process[process]!=NaN){
 
-            if(refresh_of_process[process]==NaN | refresh_of_process[process]==undefined){
-                refresh_of_process=0
-            }
-            //console.log(names[process]+"--"+Math.round(refresh_of_process[process])+"--"+Math.round(x[process])+"--"+Math.round(y[process]))
+            console.log(names[process]+"|--|"+Math.round(refresh_of_process[process])+"|--|"+Math.round(x[process])+"|--|"+Math.round(y[process]))
             if(refresh_of_process[process]>0 & refresh_of_process[process]<1)
                 refresh_of_process=1
     
@@ -465,11 +565,11 @@ function sync(shuld_not_be_called=true){
                 x[process]+=momentumX[process]
                 y[process]+=momentumY[process]
             }
-            document.getElementById(names[process]).style.marginLeft=String((x[process]))+"px"
-            document.getElementById(names[process]).style.marginTop=String((y[process]))+"px"
-            refresh_of_process[process]-=1
-            
-            
+            if(ishidden[process]!=1){
+                document.getElementById(names[process]).style.marginLeft=String((x[process]))+"px"
+                document.getElementById(names[process]).style.marginTop=String((y[process]))+"px"
+                refresh_of_process[process]-=1
+            }
         }
         
     }
