@@ -58,10 +58,10 @@
 > - width of the object
 > - height of the object
 - ### hide( name )
-> - hides object
+> hides object
 > - name of the object
 - ### show( name )
-> - shows object
+> shows object
 > - name of the object
 ## layer functions <br />
 > - name of the object
@@ -121,7 +121,7 @@
 > - name of the object
 - ### get_layer( name )
 > returns layer of object
-
+> - name of the object
 ## collision functions  <br />
 
 - ### get_collision( name )
