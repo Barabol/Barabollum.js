@@ -83,7 +83,7 @@ function new_obj(WindowWidth,WindowHeight,WindowName,WindowX=0,WindowY=0,pozitio
         document.getElementById(pozition).innerHTML+="<div id='"+WindowName+"'></div>"
 
     document.getElementById(WindowName).style.backgroundColor="#000000"//test koloru chyba ??
-
+    document.getElementById(WindowName).style.transition="margin "+1/refresh+"s cubic-bezier(1, 1, 1, 1)"
     //marginesy
     document.getElementById(WindowName).style.marginLeft=String(WindowY)+"px"
     document.getElementById(WindowName).style.marginTop=String(WindowX)+"px"
@@ -91,8 +91,6 @@ function new_obj(WindowWidth,WindowHeight,WindowName,WindowX=0,WindowY=0,pozitio
     //wielkość
     document.getElementById(WindowName).style.height=String(WindowHeight)+"px"
     document.getElementById(WindowName).style.width=String(WindowWidth)+"px"
-
-    document.getElementById(WindowName).style.transition="marginLeft "+1/refresh+"s,marginTop "+1/refresh+"s"
     document.getElementById(WindowName).style.position="absolute"
 
     xwidth[xwidth.length]=WindowWidth
@@ -109,7 +107,6 @@ function new_obj(WindowWidth,WindowHeight,WindowName,WindowX=0,WindowY=0,pozitio
     ishidden[ishidden.length]=0
     hiddenx[hiddenx.length]=0
     hiddeny[hiddeny.length]=0
-    //console.log(1000/refresh)//wyświeltanie czasu na refresh
     return true
 }
 
@@ -127,7 +124,8 @@ function del_obj(name){
     xheight.splice(id)
     ishidden.splice(id)
     has_collision.splice(id)
-    
+    hiddenx.splice(id)
+    hiddeny.splice(id)
 
     document.getElementById(name).remove()
 
@@ -231,8 +229,6 @@ function move_by(object,destinationX,destinationY){
     y[object]+=destinationY
     desiredX[object]+=destinationX
     desiredY[object]+=destinationY
-    hiddenx[object]=x[object]
-    hiddeny[object]=y[object]
 
     return true
 }
@@ -264,8 +260,6 @@ function move_to(object,destinationX,destinationY){
     y[object]=destinationY
     desiredX[object]=destinationY
     desiredY[object]=destinationY
-    hiddenx[object]=x[object]
-    hiddeny[object]=y[object]
 
 
     return true
@@ -286,7 +280,7 @@ function move_to(object,destinationX,destinationY){
 // :o
 
 function slide_by(object,destinationX,destinationY,speed){
-    let z
+    z=0
     if (errors==true){
         if (ishidden[names.indexOf(object)]==1)throw console.error("object is hidden!")
         if (object==undefined)      throw console.error("object must be specified!")//errory
@@ -302,12 +296,8 @@ function slide_by(object,destinationX,destinationY,speed){
     if(names.indexOf(object)!=-1) object=names.indexOf(object)
     else if (errors==true) throw console.error("object of this name does not exist!")
 
-    //console.log(destinationX,destinationY)
-    
-    //console.log("--------------")
     desiredX[object]+=Number(destinationX)
     desiredY[object]+=Number(destinationY)
-    //console.log(desiredX[object],desiredY[object])
     if(desiredX[object]!=0 & desiredY[object]==0)
     z=desiredX[object]-x[object]
 
@@ -317,20 +307,15 @@ function slide_by(object,destinationX,destinationY,speed){
     else if(desiredX[object]!=0 & desiredY[object]!=0)
     z=Math.sqrt(Math.pow(desiredX[object]-x[object], 2) + Math.pow(desiredY[object]-y[object], 2))
     
-    //console.log(z)
     if(z<0)
     z*=-1
-    //console.log(z)
+    
     if(z!=0){
-        //console.log((z*refresh)/speed)
         refresh_of_process[object]=(z*refresh)/speed
-        //console.log(desiredX[object]/refresh_of_process[object],desiredY[object]/refresh_of_process[object])
         if(destinationX!=0)
             momentumX[object]=((desiredX[object]-x[object])/refresh_of_process[object])
         if(destinationY!=0)
             momentumY[object]=((desiredY[object]-y[object])/refresh_of_process[object])
-        hiddenx[object]=desiredX[object]
-        hiddeny[object]=desiredY[object]
     }
   
 
@@ -339,7 +324,7 @@ function slide_by(object,destinationX,destinationY,speed){
 }
 
 function slide_to(object,destinationX,destinationY,speed){
-    let z=0
+    z=0
 
     if (errors==true){
         if (ishidden[names.indexOf(object)]==1)throw console.error("object is hidden!")
@@ -355,13 +340,8 @@ function slide_to(object,destinationX,destinationY,speed){
     
     if(names.indexOf(object)!=-1) object=names.indexOf(object)
     else if (errors==true) throw console.error("object of this name does not exist!")
-    XX=destinationX
-    YY=destinationY
     destinationX-=x[object]
     destinationY-=y[object]
-    //console.log(destinationX,destinationY)
-    //console.log(desiredX[object],desiredY[object])
-    //console.log("--------------")
     desiredX[object]=Number(destinationX)
     desiredY[object]=Number(destinationY)
 
@@ -374,14 +354,11 @@ function slide_to(object,destinationX,destinationY,speed){
     else if(desiredX[object]!=0 & desiredY[object]!=0)
     z=Math.sqrt(Math.pow(desiredX[object], 2) + Math.pow(desiredY[object], 2))
     
-    //console.log(z)
     if(z<0)
     z*=-1
-    //console.log(z)
+
     if(z!=0){
-        //console.log((z*refresh)/speed)
         refresh_of_process[object]=(z*refresh)/speed
-        //console.log(desiredX[object]/refresh_of_process[object],desiredY[object]/refresh_of_process[object])
         if(destinationX!=0)
             momentumX[object]=(desiredX[object]/refresh_of_process[object])
         if(destinationY!=0)
@@ -390,8 +367,6 @@ function slide_to(object,destinationX,destinationY,speed){
   
     desiredX[object]+=x[object]
     desiredY[object]+=y[object]
-    hiddenx[object]=desiredX[object]
-    hiddeny[object]=desiredY[object]
 
     return true
 }
@@ -400,6 +375,8 @@ function hide(name){
     if(names.indexOf(name)!=-1) name=names.indexOf(name)
     else if (errors==true) throw console.error("object of this name does not exist!")
     if(errors==true & ishidden[name]==1)throw console.error("object is already hidden!")
+    hiddenx[name]=x[name]
+    hiddeny[name]=y[name]
     document.getElementById(names[name]).style.marginLeft=String((-xwidth[name]-20))+"px"
     document.getElementById(names[name]).style.marginTop=String((-xheight[name]-20))+"px"
     ishidden[name]=1
@@ -578,7 +555,7 @@ function sync(shuld_not_be_called=true){
 /*
 -------------------dodać
 -zmiane kolejności obiektów na podstawie HTML i ułożenia <div>
--naprawić slide_to()
+-naprawić slide_to()+
 -poprawić slide_by() jeśli jest nakładane kilku krotnie z różnymi odległościami
 -kolizje na podstawie collision(nazwa) i wyświetla wsztystkie co kolidują+
 -wymaganąfunkcje która będzie udomowiona w pętli refresh ratea+
