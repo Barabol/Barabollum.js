@@ -68,6 +68,11 @@
 > sets layer of object
 > - name of the object
 > - layer of object
+- ### set_transparency( name , transparency )
+> sets transparency of object
+> - name of the object
+> - transparency of object
+
 ## movement functions <br />
 
 - ### move_to( name , x , y )
@@ -97,6 +102,10 @@
 > - how many px in x direction object will travel in time
 > - how many px in y direction object will travel in time
 > - time it will take to slide to given x and y
+- ### give_static_momentum( name , momentum )
+> sets static momentum
+> - name of the object
+> - momentum as an array
 
 ## get functions <br />
 
@@ -120,6 +129,12 @@
 > - name of the object
 - ### get_layer( name )
 > returns layer of object
+> - name of the object
+- ### get_momentum( name )
+> returns momentum as an array [x,y]
+> - name of the object
+- ### get_transparency( name )
+> returns transparency
 > - name of the object
 ## collision functions  <br />
 
