@@ -133,7 +133,7 @@ function del_obj(name){
     return true
 }
 
-function texture(object="main",input,size_of_image=[0,0],offset=[0,0],repeat=false){//zmiana backgroundu
+function texture(object="main",input,size_of_image=[xwidth[names.indexOf(object)],xheight[names.indexOf(object)]],offset=[0,0],repeat=false){//zmiana backgroundu
 
     if(object=="main")
         object=0
@@ -232,7 +232,6 @@ function move_by(object,destinationX,destinationY){
 
     return true
 }
-
 function move_to(object,destinationX,destinationY){
     if (errors==true){
         if (object==undefined)      throw console.error("object must be specified!")//errory
@@ -430,6 +429,49 @@ function set_process(process){
     process_sync=process
     return true
 }
+function set_transparency(name,transparency){
+    if(names.indexOf(name)!=-1) name=names.indexOf(name)
+    else if (errors==true) throw console.error("object of this name does not exist!")
+    else if(errors==true & isNaN(transparency))console.error("transparency must be a number!")
+    if (transparency>=0.99)
+        transparency/=100
+    document.getElementById(names[name]).style.opacity=Number(transparency)
+    return true
+}
+function get_transparency(name){
+    if(names.indexOf(name)!=-1) name=names.indexOf(name)
+    else if (errors==true) throw console.error("object of this name does not exist!")
+    return Number(document.getElementById(names[name]).style.opacity)
+}
+function give_static_momentum(name,momentum_as_array=[0,0]){
+    if(names.indexOf(name)!=-1) name=names.indexOf(name)
+    else if (errors==true) throw console.error("object of this name does not exist!")
+    momentumX[name]=momentum_as_array[0]
+    momentumY[name]=momentum_as_array[1]
+    refresh_of_process[name]=-1
+    if(momentum_as_array[0]==0 & momentum_as_array[0]==0)
+    refresh_of_process[name]=0
+    return true
+}
+function get_momentum(name){
+    if(names.indexOf(name)!=-1) name=names.indexOf(name)
+    else if (errors==true) throw console.error("object of this name does not exist!")
+    return [momentumX[name],momentumY[name]]
+}
+function set_layer(name,layer){
+    if(names.indexOf(name)!=-1) name=names.indexOf(name)
+    else if (errors==true) throw console.error("object of this name does not exist!")
+    if(errors==true){
+    if(isNaN(layer))console.error("layer must be a number!")
+    else if(layer<0)console.error("layer must be a positive number!")
+    }
+    document.getElementById(names[name]).style.zIndex=Number(layer)
+    return true
+}
+function get_layer(object){
+    if(names.indexOf(object)==-1 & errors==true) throw console.error("object of this name does not exist!")
+    return Number(document.getElementById(object).style.zIndex)
+}
 function get_x(object){
     if(names.indexOf(object)==-1 & errors==true) throw console.error("object of this name does not exist!")
     return Number(document.getElementById(object).style.marginLeft.slice(0, -2))
@@ -468,7 +510,25 @@ function get_speed_by(destinationX,destinationY,desiredTime){
         z=destinationX
     else if(destinationY!=0 && destinationX!=0)
         z=Math.sqrt(Math.pow(destinationX, 2) + Math.pow(destinationY, 2))
-    return(z)
+    return(z/desiredTime)
+}
+function get_speed_to(name,destinationX,destinationY,desiredTime){
+    if(names.indexOf(name)!=-1) name=names.indexOf(name)
+    else if (errors==true) throw console.error("object of this name does not exist!")
+    if (errors==true){
+        if (destinationX==undefined)throw console.error("desired X must be specified!")
+        if (destinationY==undefined)throw console.error("desired Y must be specified!")
+        if (destinationX==undefined)throw console.error("desired time must be specified!")
+    }
+    destinationX-=x[name]
+    destinationY-=y[name]
+    if(destinationX==0 && destinationY!=0) 
+        z=destinationY
+    else if(destinationY==0 && destinationX!=0)
+        z=destinationX
+    else if(destinationY!=0 && destinationX!=0)
+        z=Math.sqrt(Math.pow(destinationX, 2) + Math.pow(destinationY, 2))
+    return(z/desiredTime)
 }
 function is_colliding(name){
     if(ishidden==1)
