@@ -98,10 +98,6 @@
 > - adition to x of the object
 > - adition to y of the object
 > - speed in px/fps
-- ### get_speed_by( x , y , time )
-> calculates px/fps 
-> - how many px in x direction object will travel in time
-> - how many px in y direction object will travel in time
 > - time it will take to slide to given x and y
 - ### give_static_momentum( name , momentum )
 > sets static momentum
@@ -110,6 +106,17 @@
 
 ## get functions <br />
 
+- ### get_speed_by( x , y , time )
+> calculates px/fps 
+> - how many px in x direction object will travel in time
+> - how many px in y direction object will travel in time
+> - desired time 
+- ### get_speed_to( name , x , y , time )
+> calculates px/fps 
+> - name of the object
+> - how many px in x direction object will travel in time
+> - how many px in y direction object will travel in time
+> - desired time 
 - ### is_sliding( name )
 > returns true if object is sliding
 > - name of the object
