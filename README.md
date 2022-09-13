@@ -63,15 +63,16 @@
 - ### show( name )
 > shows object
 > - name of the object
+- ### set_transparency( name , transparency )
+> sets transparency of object
+> - name of the object
+> - transparency of object
+
 ## layer functions <br />
 - ### set_layer( name , layer )
 > sets layer of object
 > - name of the object
 > - layer of object
-- ### set_transparency( name , transparency )
-> sets transparency of object
-> - name of the object
-> - transparency of object
 
 ## movement functions <br />
 
