@@ -64,7 +64,6 @@
 > shows object
 > - name of the object
 ## layer functions <br />
-> - name of the object
 - ### set_layer( name , layer )
 > sets layer of object
 > - name of the object
