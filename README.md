@@ -1,4 +1,4 @@
-# Barabollum.js V 1.0.1
+# Barabollum.js 1.0.0.0.0.0.0.0.1
 ![logo](https://cdn.discordapp.com/attachments/970467384710270976/1017755108735455242/unknown.png) <br />
 # Commands <br />
 ### values tagged with '*' are not required
