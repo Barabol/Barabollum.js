@@ -504,6 +504,7 @@ function get_speed_by(destinationX,destinationY,desiredTime){
         if (destinationY==undefined)throw console.error("desired Y must be specified!")
         if (destinationX==undefined)throw console.error("desired time must be specified!")
     }
+    z=0
     if(destinationX==0 && destinationY!=0) 
         z=destinationY
     else if(destinationY==0 && destinationX!=0)
@@ -520,6 +521,7 @@ function get_speed_to(name,destinationX,destinationY,desiredTime){
         if (destinationY==undefined)throw console.error("desired Y must be specified!")
         if (destinationX==undefined)throw console.error("desired time must be specified!")
     }
+    z=0
     destinationX-=x[name]
     destinationY-=y[name]
     if(destinationX==0 && destinationY!=0) 
@@ -614,9 +616,5 @@ function sync(shuld_not_be_called=true){
 }
 /*
 -------------------dodać
--zmiane kolejności obiektów na podstawie HTML i ułożenia <div>
--naprawić slide_to()+
--poprawić slide_by() jeśli jest nakładane kilku krotnie z różnymi odległościami
--kolizje na podstawie collision(nazwa) i wyświetla wsztystkie co kolidują+
--wymaganąfunkcje która będzie udomowiona w pętli refresh ratea+
+-dodać eventy jak się coś klika i ich flitrowanie na podstaawie tych co chcesz
 */
